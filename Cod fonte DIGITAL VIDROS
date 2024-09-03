@@ -1,0 +1,40 @@
+# Código DIGITAL VIDROS
+import pandas as pd
+import matplotlib.pyplot as plt
+
+# Simulação de dados de vendas
+data = {
+    'data_venda': ['2024-09-01', '2024-09-01', '2024-09-02', '2024-09-02', '2024-09-03'],
+    'produto': ['Vidro Temperado', 'Espelho', 'Vidro Comum', 'Vidro Temperado', 'Vidro Laminado'],
+    'quantidade': [10, 5, 8, 15, 12],
+    'preco_unitario': [150.0, 250.0, 100.0, 150.0, 200.0]
+}
+
+# Criação do DataFrame
+df = pd.DataFrame(data)
+df['data_venda'] = pd.to_datetime(df['data_venda'])
+
+# Cálculo do valor total da venda por produto
+df['valor_total'] = df['quantidade'] * df['preco_unitario']
+
+# Análise básica dos dados
+print("Resumo das Vendas:")
+print(df)
+
+# Total de vendas por dia
+vendas_por_dia = df.groupby('data_venda')['valor_total'].sum()
+print("\nTotal de vendas por dia:")
+print(vendas_por_dia)
+
+# Produto mais vendido em termos de quantidade
+produto_mais_vendido = df.groupby('produto')['quantidade'].sum().idxmax()
+print(f"\nProduto mais vendido: {produto_mais_vendido}")
+
+# Gráfico de vendas por dia
+plt.figure(figsize=(10, 5))
+plt.plot(vendas_por_dia.index, vendas_por_dia.values, marker='o')
+plt.title('Vendas Diárias')
+plt.xlabel('Data')
+plt.ylabel('Valor Total (R$)')
+plt.grid(True)
+plt.show()
